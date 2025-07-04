@@ -1,18 +1,20 @@
 {
-  "name": "@omer-x/node-module",
+  "name": "@omer-x/json-schema-to-zod",
   "version": "1.0.0",
-  "description": "UPDATE_HERE_WITH_A_MEANINGFUL_DESCRIPTION",
+  "description": "Zod schema generator from JSON schema specs",
   "keywords": [
-    "typescript"
+    "json-schema",
+    "zod",
+    "generator"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/omermecitoglu/node-module.git"
+    "url": "git+https://github.com/omermecitoglu/json-schema-to-zod.git"
   },
   "bugs": {
-    "url": "https://github.com/omermecitoglu/node-module/issues"
+    "url": "https://github.com/omermecitoglu/json-schema-to-zod/issues"
   },
-  "homepage": "https://github.com/omermecitoglu/node-module#readme",
+  "homepage": "https://github.com/omermecitoglu/json-schema-to-zod#readme",
   "private": false,
   "publishConfig": {
     "access": "public"
@@ -40,8 +42,9 @@
     "dev": "tsup --watch",
     "build": "tsup"
   },
-  "dependencies": {
-    "react": "^19.1.0"
+  "peerDependencies": {
+    "@omer-x/openapi-types": "^1",
+    "zod": "^3"
   },
   "devDependencies": {
     "@omer-x/eslint-config": "^2.1.3",
