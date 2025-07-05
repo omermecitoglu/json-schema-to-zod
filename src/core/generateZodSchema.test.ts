@@ -10,4 +10,23 @@ describe("generateZodSchema", () => {
     expect(generateZodSchema({ type: "string" })).toStrictEqual({ dependencies: [], body: "z.string()" });
     expect(generateZodSchema({ type: "object", properties: {} })).toStrictEqual({ dependencies: [], body: "z.object({})" });
   });
+
+  it("should handle $ref schemas", () => {
+    const schema = { $ref: "#/components/schemas/MyComponent" };
+    expect(generateZodSchema(schema)).toStrictEqual({ dependencies: ["MyComponent"], body: "MyComponent" });
+  });
+
+  it("should throw an error for invalid $ref schemas", () => {
+    const schema = { $ref: "#/components/schemas/" };
+    expect(() => generateZodSchema(schema)).toThrow("Invalid $ref in schema");
+  });
+
+  it("should handle array schemas", () => {
+    expect(generateZodSchema({
+      type: "array",
+      items: { type: "string" },
+    })).toStrictEqual({
+      dependencies: [], body: "z.array(z.string())",
+    });
+  });
 });

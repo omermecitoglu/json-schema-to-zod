@@ -5,7 +5,12 @@ import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
 export function generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): Definition {
   if ("$ref" in jsonSchema) {
-    return { dependencies: [], body: "" };
+    const [_, __, _category, componentName] = jsonSchema.$ref.split("/");
+    if (!componentName) throw new Error("Invalid $ref in schema");
+    return {
+      dependencies: [componentName],
+      body: componentName,
+    };
   }
   if (jsonSchema.anyOf) return { dependencies: [], body: "" };
   if (jsonSchema.oneOf) return { dependencies: [], body: "" };
