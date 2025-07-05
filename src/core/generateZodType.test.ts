@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { generateZodType } from "./generateZodType";
+import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
 describe("generateZodType", () => {
   it("should handle primitive types", () => {
@@ -18,6 +19,22 @@ describe("generateZodType", () => {
   it("should throw an error for invalid $ref schemas", () => {
     const schema = { $ref: "#/components/schemas/" };
     expect(() => generateZodType(schema)).toThrow("Invalid $ref in schema");
+  });
+
+  it("should handle union schemas", () => {
+    const input = { anyOf: [{ type: "string" }, { type: "boolean" }] } as SchemaObject;
+    expect(generateZodType(input)).toStrictEqual({
+      dependencies: [],
+      body: "z.ZodUnion<readonly [z.ZodString, z.ZodBoolean]>",
+    });
+  });
+
+  it("should handle oneOf schemas", () => {
+    const input = { oneOf: [{ type: "string" }, { type: "boolean" }] } as SchemaObject;
+    expect(generateZodType(input)).toStrictEqual({
+      dependencies: [],
+      body: "z.ZodUnion<readonly [z.ZodString, z.ZodBoolean]>",
+    });
   });
 
   it("should handle array schemas", () => {

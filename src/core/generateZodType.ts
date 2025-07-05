@@ -2,6 +2,7 @@ import type { Definition } from "~/types/definition";
 import { handleZodArray } from "./type/array";
 import { handleZodObject } from "./type/object";
 import { handleZodString } from "./type/string";
+import { handleZodUnion } from "./type/union";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
 export function generateZodType(jsonSchema: SchemaObject): Definition {
@@ -13,8 +14,8 @@ export function generateZodType(jsonSchema: SchemaObject): Definition {
       body: componentName,
     };
   }
-  if (jsonSchema.anyOf) return { dependencies: [], body: "" };
-  if (jsonSchema.oneOf) return { dependencies: [], body: "" };
+  if (jsonSchema.anyOf) return handleZodUnion(jsonSchema.anyOf);
+  if (jsonSchema.oneOf) return handleZodUnion(jsonSchema.oneOf);
   switch (jsonSchema.type) {
     case "boolean":
       return { dependencies: [], body: "z.ZodBoolean" };
