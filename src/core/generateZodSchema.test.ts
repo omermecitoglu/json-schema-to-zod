@@ -8,7 +8,6 @@ describe("generateZodSchema", () => {
     expect(generateZodSchema({ type: "integer" })).toStrictEqual({ dependencies: [], body: "z.int()" });
     expect(generateZodSchema({ type: "number" })).toStrictEqual({ dependencies: [], body: "z.number()" });
     expect(generateZodSchema({ type: "string" })).toStrictEqual({ dependencies: [], body: "z.string()" });
-    expect(generateZodSchema({ type: "object", properties: {} })).toStrictEqual({ dependencies: [], body: "z.object({})" });
   });
 
   it("should handle $ref schemas", () => {
@@ -27,6 +26,19 @@ describe("generateZodSchema", () => {
       items: { type: "string" },
     })).toStrictEqual({
       dependencies: [], body: "z.array(z.string())",
+    });
+  });
+
+  it("should handle object schemas", () => {
+    expect(generateZodSchema({
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        age: { type: "integer" },
+      },
+    })).toStrictEqual({
+      dependencies: [],
+      body: "z.object({ name: z.string().optional(), age: z.int().optional() })",
     });
   });
 });
