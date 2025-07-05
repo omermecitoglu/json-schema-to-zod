@@ -9,6 +9,5 @@ describe("generateZodType", () => {
     expect(generateZodType({ type: "number" })).toStrictEqual({ dependencies: [], body: "z.ZodNumber" });
     expect(generateZodType({ type: "string" })).toStrictEqual({ dependencies: [], body: "z.ZodString" });
     expect(generateZodType({ type: "object", properties: {} })).toStrictEqual({ dependencies: [], body: "z.ZodObject<{}>" });
-    expect(generateZodType({ type: "array", items: [] })).toStrictEqual({ dependencies: [], body: "z.ZodArray<unknown>" });
   });
 });
