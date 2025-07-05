@@ -3,6 +3,7 @@ import { handleZodArray } from "./schema/array";
 import { handleZodNumber } from "./schema/number";
 import { handleZodObject } from "./schema/object";
 import { handleZodString } from "./schema/string";
+import { handleZodUnion } from "./schema/union";
 import type { ReferenceObject } from "@omer-x/openapi-types/reference";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
@@ -15,8 +16,8 @@ export function generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): D
       body: componentName,
     };
   }
-  if (jsonSchema.anyOf) return { dependencies: [], body: "" };
-  if (jsonSchema.oneOf) return { dependencies: [], body: "" };
+  if (jsonSchema.anyOf) return handleZodUnion(jsonSchema.anyOf);
+  if (jsonSchema.oneOf) return handleZodUnion(jsonSchema.oneOf);
   switch (jsonSchema.type) {
     case "boolean":
       return { dependencies: [], body: "z.boolean()" };
