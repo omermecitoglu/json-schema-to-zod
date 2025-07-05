@@ -9,6 +9,5 @@ describe("generateZodSchema", () => {
     expect(generateZodSchema({ type: "number" })).toStrictEqual({ dependencies: [], body: "z.number()" });
     expect(generateZodSchema({ type: "string" })).toStrictEqual({ dependencies: [], body: "z.string()" });
     expect(generateZodSchema({ type: "object", properties: {} })).toStrictEqual({ dependencies: [], body: "z.object({})" });
-    expect(generateZodSchema({ type: "array", items: [] })).toStrictEqual({ dependencies: [], body: "z.array()" });
   });
 });

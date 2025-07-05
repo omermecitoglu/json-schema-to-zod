@@ -1,4 +1,5 @@
 import type { Definition } from "~/types/definition";
+import { handleZodArray } from "./schema/array";
 import type { ReferenceObject } from "@omer-x/openapi-types/reference";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
@@ -22,6 +23,6 @@ export function generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): D
     case "object":
       return { dependencies: [], body: "z.object({})" };
     case "array":
-      return { dependencies: [], body: "z.array()" };
+      return handleZodArray(jsonSchema);
   }
 }
