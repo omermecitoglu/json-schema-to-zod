@@ -1,3 +1,3 @@
-export function exampleFunction() {
-  console.log(" This is an example function ");
-}
+import { generateZodSchema } from "./core/generateZodSchema";
+
+export { generateZodSchema };

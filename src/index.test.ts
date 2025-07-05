@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { exampleFunction } from "./index";
+import { generateZodSchema } from "./index";
 
-describe("exampleFunction", () => {
+describe("generateZodSchema", () => {
   it("should be a function", () => {
-    expect(typeof exampleFunction).toBe("function");
+    expect(typeof generateZodSchema).toBe("function");
   });
 });
