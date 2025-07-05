@@ -1,5 +1,6 @@
 import type { Definition } from "~/types/definition";
 import { handleZodArray } from "./type/array";
+import { handleZodObject } from "./type/object";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
 export function generateZodType(jsonSchema: SchemaObject): Definition {
@@ -25,7 +26,7 @@ export function generateZodType(jsonSchema: SchemaObject): Definition {
     case "string":
       return { dependencies: [], body: "z.ZodString" };
     case "object":
-      return { dependencies: [], body: "z.ZodObject<{}>" };
+      return handleZodObject(jsonSchema);
     case "array":
       return handleZodArray(jsonSchema);
   }
