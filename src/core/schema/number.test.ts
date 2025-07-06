@@ -49,4 +49,38 @@ describe("handleZodNumber", () => {
       body: "z.number()",
     });
   });
+
+  it("should generate Zod number schema with minimum", () => {
+    const schema = handleZodNumber({
+      type: "number",
+      minimum: 3,
+    });
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.number().gte(3)",
+    });
+  });
+
+  it("should generate Zod number schema with maximum", () => {
+    const schema = handleZodNumber({
+      type: "number",
+      maximum: 7,
+    });
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.number().lte(7)",
+    });
+  });
+
+  it("should generate Zod number schema with minimum and maximum", () => {
+    const schema = handleZodNumber({
+      type: "number",
+      minimum: 1,
+      maximum: 5,
+    });
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.number().gte(1).lte(5)",
+    });
+  });
 });

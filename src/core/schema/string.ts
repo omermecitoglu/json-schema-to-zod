@@ -1,19 +1,18 @@
 import type { Definition } from "~/types/definition";
 import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
-
 export function handleZodString(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "string") {
     throw new Error("Invalid schema type for Zod string handler");
   }
   const validations: string[] = [];
-  if (jsonSchema.minLength && jsonSchema.maxLength && jsonSchema.minLength === jsonSchema.maxLength) {
+  if (typeof jsonSchema.minLength === "number" && jsonSchema.minLength === jsonSchema.maxLength) {
     validations.push(`.length(${jsonSchema.minLength})`);
   }
-  if (jsonSchema.minLength && jsonSchema.minLength !== jsonSchema.maxLength) {
+  if (typeof jsonSchema.minLength === "number" && jsonSchema.minLength !== jsonSchema.maxLength) {
     validations.push(`.min(${jsonSchema.minLength})`);
   }
-  if (jsonSchema.maxLength && jsonSchema.minLength !== jsonSchema.maxLength) {
+  if (typeof jsonSchema.maxLength === "number" && jsonSchema.minLength !== jsonSchema.maxLength) {
     validations.push(`.max(${jsonSchema.maxLength})`);
   }
   switch (jsonSchema.format) {

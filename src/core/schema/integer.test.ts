@@ -50,4 +50,26 @@ describe("handleZodInteger", () => {
       body: "z.int()",
     });
   });
+
+  it("should generate Zod integer schema with minimum", () => {
+    const schema = handleZodInteger({
+      type: "integer",
+      minimum: 1,
+    } as unknown as SchemaObject);
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.int().gte(1)",
+    });
+  });
+
+  it("should generate Zod integer schema with maximum", () => {
+    const schema = handleZodInteger({
+      type: "integer",
+      maximum: 100,
+    } as unknown as SchemaObject);
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.int().lte(100)",
+    });
+  });
 });
