@@ -12,7 +12,7 @@ describe("handleZodObject", () => {
       },
     })).toStrictEqual({
       dependencies: [],
-      body: "z.object({ name: z.string().optional(), age: z.int().optional() })",
+      body: "z.object({\n\tname: z.string().optional(),\n\tage: z.int().optional(),\n})",
     });
   });
 
@@ -26,7 +26,7 @@ describe("handleZodObject", () => {
       required: ["name"],
     })).toStrictEqual({
       dependencies: [],
-      body: "z.object({ name: z.string(), age: z.int().optional() })",
+      body: "z.object({\n\tname: z.string(),\n\tage: z.int().optional(),\n})",
     });
   });
 
@@ -35,7 +35,7 @@ describe("handleZodObject", () => {
       type: "object",
     })).toStrictEqual({
       dependencies: [],
-      body: "z.object({  })",
+      body: "z.object({\n})",
     });
   });
 });

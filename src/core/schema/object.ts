@@ -17,5 +17,5 @@ export function handleZodObject(jsonSchema: SchemaObject): Definition {
       properties.push(`${key}: ${result.body}.optional()`);
     }
   }
-  return { dependencies, body: `z.object({ ${properties.join(", ")} })` };
+  return { dependencies, body: `z.object({\n${properties.map(p => `\t${p},\n`).join("")}})` };
 }
