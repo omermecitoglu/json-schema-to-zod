@@ -61,4 +61,18 @@ describe("handleZodString", () => {
       body: "z.string()",
     });
   });
+
+  it("should handle string with minLength and maxLength", () => {
+    expect(handleZodString({ type: "string", minLength: 5, maxLength: 10 })).toStrictEqual({
+      dependencies: [],
+      body: "z.string().min(5).max(10)",
+    });
+  });
+
+  it("should handle string with exact length", () => {
+    expect(handleZodString({ type: "string", minLength: 5, maxLength: 5 })).toStrictEqual({
+      dependencies: [],
+      body: "z.string().length(5)",
+    });
+  });
 });
