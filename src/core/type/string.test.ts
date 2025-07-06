@@ -61,4 +61,18 @@ describe("handleZodString", () => {
       body: "z.ZodString",
     });
   });
+
+  it("should handle string enum", () => {
+    expect(handleZodString({ type: "string", enum: ["A", "B", "C"] })).toStrictEqual({
+      dependencies: [],
+      body: 'z.ZodEnum<{ A: "A", B: "B", C: "C" }>',
+    });
+  });
+
+  it("should handle empty string enum", () => {
+    expect(handleZodString({ type: "string", enum: [] })).toStrictEqual({
+      dependencies: [],
+      body: "z.ZodEnum<{  }>",
+    });
+  });
 });
