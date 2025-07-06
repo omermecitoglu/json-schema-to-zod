@@ -65,7 +65,7 @@ describe("handleZodString", () => {
   it("should handle string enum", () => {
     expect(handleZodString({ type: "string", enum: ["A", "B", "C"] })).toStrictEqual({
       dependencies: [],
-      body: 'z.ZodEnum<{ A: "A", B: "B", C: "C" }>',
+      body: 'z.ZodEnum<{ "A": "A", "B": "B", "C": "C" }>',
     });
   });
 
