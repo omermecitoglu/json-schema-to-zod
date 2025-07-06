@@ -1,5 +1,6 @@
 import type { Definition } from "~/types/definition";
 import { handleZodArray } from "./schema/array";
+import { handleZodInteger } from "./schema/integer";
 import { handleZodNumber } from "./schema/number";
 import { handleZodObject } from "./schema/object";
 import { handleZodString } from "./schema/string";
@@ -24,7 +25,7 @@ export function generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): D
     case "null":
       return { dependencies: [], body: "z.null()" };
     case "integer":
-      return { dependencies: [], body: "z.int()" };
+      return handleZodInteger(jsonSchema);
     case "number":
       return handleZodNumber(jsonSchema);
     case "string":
