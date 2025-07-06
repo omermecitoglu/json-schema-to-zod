@@ -34,7 +34,14 @@ export function handleZodString(jsonSchema: SchemaObject): Definition {
       return { dependencies: [], body: "z.uuid()" + validations.join("") };
     case "uri":
       return { dependencies: [], body: "z.url()" + validations.join("") };
-    default:
+    default: {
+      if (jsonSchema.enum) {
+        return {
+          dependencies: [],
+          body: `z.enum([${jsonSchema.enum.map(item => `"${item}"`).join(", ")}])`,
+        };
+      }
       return { dependencies: [], body: "z.string()" + validations.join("") };
+    }
   }
 }

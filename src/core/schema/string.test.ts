@@ -75,4 +75,11 @@ describe("handleZodString", () => {
       body: "z.string().length(5)",
     });
   });
+
+  it("should handle string enum", () => {
+    expect(handleZodString({ type: "string", enum: ["foo", "bar"] })).toStrictEqual({
+      dependencies: [],
+      body: 'z.enum(["foo", "bar"])',
+    });
+  });
 });
