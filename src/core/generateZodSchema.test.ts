@@ -58,4 +58,9 @@ describe("generateZodSchema", () => {
       body: "z.object({ name: z.string().optional(), age: z.int().optional() })",
     });
   });
+
+  it("should handle schemas without type", () => {
+    const input = { title: "Whatever" } as unknown as SchemaObject;
+    expect(generateZodSchema(input)).toStrictEqual({ dependencies: [], body: "z.unknown()" });
+  });
 });

@@ -31,5 +31,7 @@ export function generateZodType(jsonSchema: SchemaObject): Definition {
       return handleZodObject(jsonSchema);
     case "array":
       return handleZodArray(jsonSchema);
+    default:
+      return { dependencies: [], body: "z.ZodUnknown" };
   }
 }
