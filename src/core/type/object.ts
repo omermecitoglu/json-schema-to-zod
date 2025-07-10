@@ -6,9 +6,22 @@ export function handleZodObject(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "object") {
     throw new Error("Invalid schema type for Zod object handler");
   }
+  if (!jsonSchema.properties) {
+    if (jsonSchema.additionalProperties === true || typeof jsonSchema.additionalProperties === "undefined") {
+      return { dependencies: [], body: "z.ZodRecord<z.ZodString, z.ZodUnknown>" };
+    }
+    if (jsonSchema.additionalProperties === false) {
+      return { dependencies: [], body: "z.ZodObject<{}>" };
+    }
+    const additionalPropertiesDefinition = generateZodType(jsonSchema.additionalProperties);
+    return {
+      dependencies: additionalPropertiesDefinition.dependencies,
+      body: `z.ZodRecord<z.ZodString, ${additionalPropertiesDefinition.body}>`,
+    };
+  }
   const dependencies: string[] = [];
   const properties: string[] = [];
-  for (const [key, property] of Object.entries(jsonSchema.properties ?? {})) {
+  for (const [key, property] of Object.entries(jsonSchema.properties)) {
     const result = generateZodType(property);
     dependencies.push(...result.dependencies);
     if (jsonSchema.required?.includes(key)) {
