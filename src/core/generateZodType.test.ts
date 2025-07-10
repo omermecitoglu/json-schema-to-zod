@@ -54,6 +54,7 @@ describe("generateZodType", () => {
         age: { type: "integer" },
       },
       required: ["name", "age"],
+      additionalProperties: false,
     })).toStrictEqual({
       dependencies: [],
       body: "z.ZodObject<{\n\tname: z.ZodString,\n\tage: z.ZodInt,\n}>",

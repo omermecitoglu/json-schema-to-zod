@@ -53,9 +53,10 @@ describe("generateZodSchema", () => {
         name: { type: "string" },
         age: { type: "integer" },
       },
+      additionalProperties: false,
     })).toStrictEqual({
       dependencies: [],
-      body: "z.object({\n\tname: z.string().optional(),\n\tage: z.int().optional(),\n})",
+      body: "z.strictObject({\n\tname: z.string().optional(),\n\tage: z.int().optional(),\n})",
     });
   });
 
