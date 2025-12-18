@@ -10,15 +10,123 @@
 
 ## Overview
 
-Zod schema generator from JSON schema specs
+`json-schema-to-zod` is a TypeScript library that generates Zod schema code from JSON Schema specifications. It supports OpenAPI 3.x schemas and provides both runtime schema generation and TypeScript type definitions.
+
+## Features
+
+- Generate Zod schemas from JSON Schema objects
+- Support for OpenAPI 3.x specifications
+- Handles complex types: objects, arrays, unions, references
+- Type-safe generation with TypeScript
+- Lightweight and dependency-free (except peer dependencies)
 
 ## Installation
 
-To install this package
+Install the package using npm:
 
 ```sh
 npm install @omer-x/json-schema-to-zod
 ```
+
+### Peer Dependencies
+
+This package requires the following peer dependencies:
+
+- `zod`: ^4.0.0
+- `@omer-x/openapi-types`: ^1.0.0
+
+Install them if not already present:
+
+```sh
+npm install zod @omer-x/openapi-types
+```
+
+## Usage
+
+### Basic Example
+
+```typescript
+import { generateZodSchema } from '@omer-x/json-schema-to-zod';
+
+const jsonSchema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    age: { type: 'integer', minimum: 0 }
+  },
+  required: ['name']
+};
+
+const result = generateZodSchema(jsonSchema);
+console.log(result.body); // "z.object({ name: z.string(), age: z.int().min(0) })"
+```
+
+### Using with References
+
+```typescript
+import { generateZodSchema } from '@omer-x/json-schema-to-zod';
+
+const schemaWithRef = {
+  $ref: '#/components/schemas/User'
+};
+
+const result = generateZodSchema(schemaWithRef);
+console.log(result.body); // User
+console.log(result.dependencies); // ['User']
+```
+
+### Generating Type Definitions
+
+```typescript
+import { generateZodType } from '@omer-x/json-schema-to-zod';
+
+const jsonSchema = { type: 'string' };
+const result = generateZodType(jsonSchema);
+console.log(result.body); // "z.ZodString"
+```
+
+## API Reference
+
+### `generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): Definition`
+
+Generates a Zod schema string from a JSON Schema object.
+
+- **Parameters:**
+  - `jsonSchema`: A JSON Schema object or reference object
+- **Returns:** A `Definition` object with:
+  - `body`: The generated Zod schema code
+  - `dependencies`: Array of referenced component names
+
+### `generateZodType(jsonSchema: SchemaObject): Definition`
+
+Generates a Zod type definition string from a JSON Schema object.
+
+- **Parameters:**
+  - `jsonSchema`: A JSON Schema object
+- **Returns:** A `Definition` object with:
+  - `body`: The generated Zod type code
+  - `dependencies`: Array of referenced component names
+
+## Supported JSON Schema Features
+
+- Primitive types: `boolean`, `null`, `integer`, `number`, `string`
+- Objects with properties and required fields
+- Arrays with item schemas
+- Unions (`anyOf`, `oneOf`)
+- References (`$ref`)
+- String formats and constraints
+- Numeric constraints (min, max, etc.)
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+
+### Development
+
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run tests: `npm test`
+4. Build the project: `npm run build`
 
 ## License
 
