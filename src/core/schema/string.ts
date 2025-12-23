@@ -5,6 +5,9 @@ export function handleZodString(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "string") {
     throw new Error("Invalid schema type for Zod string handler");
   }
+  if (jsonSchema.const) {
+    return { dependencies: [], body: `z.literal("${jsonSchema.const}")` };
+  }
   const validations: string[] = [];
   if (typeof jsonSchema.minLength === "number" && jsonSchema.minLength === jsonSchema.maxLength) {
     validations.push(`.length(${jsonSchema.minLength})`);

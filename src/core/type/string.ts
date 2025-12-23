@@ -5,6 +5,9 @@ export function handleZodString(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "string") {
     throw new Error("Invalid schema type for Zod string handler");
   }
+  if (jsonSchema.const) {
+    return { dependencies: [], body: `z.ZodLiteral<"${jsonSchema.const}">` };
+  }
   switch (jsonSchema.format) {
     case "email":
       return { dependencies: [], body: "z.ZodEmail" };
