@@ -75,4 +75,11 @@ describe("handleZodString", () => {
       body: "z.ZodEnum<{  }>",
     });
   });
+
+  it("should handle constant string", () => {
+    expect(handleZodString({ type: "string", const: "UNKNOWN_ERROR" })).toStrictEqual({
+      dependencies: [],
+      body: 'z.ZodLiteral<"UNKNOWN_ERROR">',
+    });
+  });
 });

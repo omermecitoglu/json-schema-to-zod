@@ -82,4 +82,11 @@ describe("handleZodString", () => {
       body: 'z.enum(["foo", "bar"])',
     });
   });
+
+  it("should handle constant string", () => {
+    expect(handleZodString({ type: "string", const: "UNKNOWN_ERROR" })).toStrictEqual({
+      dependencies: [],
+      body: 'z.literal("UNKNOWN_ERROR")',
+    });
+  });
 });
