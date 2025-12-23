@@ -5,8 +5,8 @@ import { handleZodNumber } from "./schema/number";
 import { handleZodObject } from "./schema/object";
 import { handleZodString } from "./schema/string";
 import { handleZodUnion } from "./schema/union";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 import type { ReferenceObject } from "@omer-x/openapi-types/reference";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
 
 export function generateZodSchema(jsonSchema: SchemaObject | ReferenceObject): Definition {
   if ("$ref" in jsonSchema) {

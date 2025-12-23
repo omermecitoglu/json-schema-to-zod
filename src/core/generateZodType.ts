@@ -3,7 +3,7 @@ import { handleZodArray } from "./type/array";
 import { handleZodObject } from "./type/object";
 import { handleZodString } from "./type/string";
 import { handleZodUnion } from "./type/union";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 export function generateZodType(jsonSchema: SchemaObject): Definition {
   if ("$ref" in jsonSchema) {

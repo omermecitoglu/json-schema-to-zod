@@ -1,7 +1,7 @@
 import type { Definition } from "~/types/definition";
 import { generateZodSchema } from "../generateZodSchema";
 import { handleZodUnion } from "./union";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 export function handleZodArray(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "array") {

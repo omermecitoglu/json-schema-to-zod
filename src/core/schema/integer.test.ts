@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { handleZodInteger } from "./integer";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 describe("handleZodInteger", () => {
   it("should handle integer schemas", () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { generateZodSchema } from "./generateZodSchema";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 describe("generateZodSchema", () => {
   it("should handle primitive types", () => {

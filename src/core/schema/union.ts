@@ -1,6 +1,6 @@
 import type { Definition } from "~/types/definition";
 import { generateZodSchema } from "../generateZodSchema";
-import type { SchemaObject } from "@omer-x/openapi-types/schema";
+import type { SchemaObject } from "@omer-x/json-schema-types";
 
 export function handleZodUnion(jsonSchemaItems: SchemaObject[]): Definition {
   const dependencies: string[] = [];
