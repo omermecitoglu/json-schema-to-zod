@@ -1,5 +1,7 @@
 import type { Definition } from "~/types/definition";
 import { handleZodArray } from "./type/array";
+import { handleZodInteger } from "./type/integer";
+import { handleZodNumber } from "./type/number";
 import { handleZodObject } from "./type/object";
 import { handleZodString } from "./type/string";
 import { handleZodUnion } from "./type/union";
@@ -22,9 +24,9 @@ export function generateZodType(jsonSchema: SchemaObject): Definition {
     case "null":
       return { dependencies: [], body: "z.ZodNull" };
     case "integer":
-      return { dependencies: [], body: "z.ZodInt" };
+      return handleZodInteger(jsonSchema);
     case "number":
-      return { dependencies: [], body: "z.ZodNumber" };
+      return handleZodNumber(jsonSchema);
     case "string":
       return handleZodString(jsonSchema);
     case "object":

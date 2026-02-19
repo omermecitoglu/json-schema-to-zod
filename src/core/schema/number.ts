@@ -5,6 +5,9 @@ export function handleZodNumber(jsonSchema: SchemaObject): Definition {
   if (jsonSchema.type !== "number") {
     throw new Error("Invalid schema type for Zod number handler");
   }
+  if (jsonSchema.const !== undefined) {
+    return { dependencies: [], body: `z.literal(${jsonSchema.const})` };
+  }
   let body = "z.number()";
   if (typeof jsonSchema.minimum === "number") {
     body += `.gte(${jsonSchema.minimum})`;
