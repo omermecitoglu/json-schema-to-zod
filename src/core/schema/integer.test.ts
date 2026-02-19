@@ -72,4 +72,15 @@ describe("handleZodInteger", () => {
       body: "z.int().lte(100)",
     });
   });
+
+  it("should generate Zod literal schema for const", () => {
+    const schema = handleZodInteger({
+      type: "integer",
+      const: 42,
+    });
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.literal(42)",
+    });
+  });
 });

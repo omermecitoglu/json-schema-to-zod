@@ -83,4 +83,15 @@ describe("handleZodNumber", () => {
       body: "z.number().gte(1).lte(5)",
     });
   });
+
+  it("should generate Zod literal schema for const", () => {
+    const schema = handleZodNumber({
+      type: "number",
+      const: 42,
+    });
+    expect(schema).toEqual({
+      dependencies: [],
+      body: "z.literal(42)",
+    });
+  });
 });
