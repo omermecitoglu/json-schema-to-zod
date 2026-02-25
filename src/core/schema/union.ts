@@ -3,12 +3,15 @@ import { generateZodSchema } from "../generateZodSchema";
 import type { SchemaObject } from "@omer-x/json-schema-types";
 
 export function handleZodUnion(jsonSchemaItems: SchemaObject[]): Definition {
-  const dependencies: string[] = [];
+  const collectedDependencies: string[] = [];
   const items: string[] = [];
   for (const item of jsonSchemaItems) {
     const result = generateZodSchema(item);
-    dependencies.push(...result.dependencies);
+    collectedDependencies.push(...result.dependencies);
     items.push(result.body);
   }
-  return { dependencies, body: `z.union([${items.join(", ")}])` };
+  return {
+    dependencies: Array.from(new Set(collectedDependencies)),
+    body: `z.union([${items.join(", ")}])`,
+  };
 }

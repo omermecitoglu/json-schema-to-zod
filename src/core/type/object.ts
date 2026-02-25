@@ -15,20 +15,23 @@ export function handleZodObject(jsonSchema: SchemaObject): Definition {
     }
     const additionalPropertiesDefinition = generateZodType(jsonSchema.additionalProperties);
     return {
-      dependencies: additionalPropertiesDefinition.dependencies,
+      dependencies: Array.from(new Set(additionalPropertiesDefinition.dependencies)),
       body: `z.ZodRecord<z.ZodString, ${additionalPropertiesDefinition.body}>`,
     };
   }
-  const dependencies: string[] = [];
+  const collectedDependencies: string[] = [];
   const properties: string[] = [];
   for (const [key, property] of Object.entries(jsonSchema.properties)) {
     const result = generateZodType(property);
-    dependencies.push(...result.dependencies);
+    collectedDependencies.push(...result.dependencies);
     if (jsonSchema.required?.includes(key)) {
       properties.push(`${key}: ${result.body}`);
     } else {
       properties.push(`${key}: z.ZodOptional<${result.body}>`);
     }
   }
-  return { dependencies, body: `z.ZodObject<{\n${properties.map(p => `\t${p},\n`).join("")}}>` };
+  return {
+    dependencies: Array.from(new Set(collectedDependencies)),
+    body: `z.ZodObject<{\n${properties.map(p => `\t${p},\n`).join("")}}>`,
+  };
 }

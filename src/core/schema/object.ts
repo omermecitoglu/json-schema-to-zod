@@ -15,15 +15,15 @@ export function handleZodObject(jsonSchema: SchemaObject): Definition {
     }
     const additionalPropertiesDefinition = generateZodSchema(jsonSchema.additionalProperties);
     return {
-      dependencies: additionalPropertiesDefinition.dependencies,
+      dependencies: Array.from(new Set(additionalPropertiesDefinition.dependencies)),
       body: `z.record(z.string(), ${additionalPropertiesDefinition.body})`,
     };
   }
-  const dependencies: string[] = [];
+  const collectedDependencies: string[] = [];
   const properties: string[] = [];
   for (const [key, property] of Object.entries(jsonSchema.properties)) {
     const result = generateZodSchema(property);
-    dependencies.push(...result.dependencies);
+    collectedDependencies.push(...result.dependencies);
     if (jsonSchema.required?.includes(key)) {
       properties.push(`${key}: ${result.body}`);
     } else {
@@ -31,17 +31,20 @@ export function handleZodObject(jsonSchema: SchemaObject): Definition {
     }
   }
   if (jsonSchema.additionalProperties === false) {
-    return { dependencies, body: `z.strictObject({\n${properties.map(p => `\t${p},\n`).join("")}})` };
+    return {
+      dependencies: Array.from(new Set(collectedDependencies)),
+      body: `z.strictObject({\n${properties.map(p => `\t${p},\n`).join("")}})`,
+    };
   }
   if (jsonSchema.additionalProperties === true || typeof jsonSchema.additionalProperties === "undefined") {
-    return { dependencies, body: `z.looseObject({\n${properties.map(p => `\t${p},\n`).join("")}})` };
+    return {
+      dependencies: Array.from(new Set(collectedDependencies)),
+      body: `z.looseObject({\n${properties.map(p => `\t${p},\n`).join("")}})`,
+    };
   }
   const additionalPropertiesDefinition = generateZodSchema(jsonSchema.additionalProperties);
   return {
-    dependencies: [
-      ...dependencies,
-      ...additionalPropertiesDefinition.dependencies,
-    ],
+    dependencies: Array.from(new Set([...collectedDependencies, ...additionalPropertiesDefinition.dependencies])),
     body: `z.object({\n${properties.map(p => `\t${p},\n`).join("")}}).catchall(${additionalPropertiesDefinition.body})`,
   };
 }

@@ -9,8 +9,14 @@ export function handleZodArray(jsonSchema: SchemaObject): Definition {
   }
   if (Array.isArray(jsonSchema.items)) {
     const union = handleZodUnion(jsonSchema.items);
-    return { dependencies: union.dependencies, body: `z.array(${union.body})` };
+    return {
+      dependencies: Array.from(new Set(union.dependencies)),
+      body: `z.array(${union.body})`,
+    };
   }
   const result = generateZodSchema(jsonSchema.items);
-  return { dependencies: result.dependencies, body: `z.array(${result.body})` };
+  return {
+    dependencies: Array.from(new Set(result.dependencies)),
+    body: `z.array(${result.body})`,
+  };
 }
