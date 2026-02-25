@@ -21,4 +21,20 @@ describe("handleZodArray", () => {
       body: "z.ZodArray<z.ZodString>",
     });
   });
+
+  it("should not return duplicated dependency names", () => {
+    const output = handleZodArray({
+      type: "array",
+      items: [
+        { $ref: "#/components/schemas/Schema1" },
+        { $ref: "#/components/schemas/Schema1" },
+      ],
+    });
+    expect(output.dependencies).not.toStrictEqual([
+      "Schema1", "Schema1",
+    ]);
+    expect(output.dependencies).toStrictEqual([
+      "Schema1",
+    ]);
+  });
 });

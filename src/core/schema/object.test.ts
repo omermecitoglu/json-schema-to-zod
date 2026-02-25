@@ -93,4 +93,21 @@ describe("handleZodObject", () => {
       body: "z.object({\n\tkey1: z.string(),\n}).catchall(z.string())",
     });
   });
+
+  it("should not return duplicated dependency names", () => {
+    const output = handleZodObject({
+      type: "object",
+      properties: {
+        foo: { $ref: "#/components/schemas/Schema1" },
+        bar: { $ref: "#/components/schemas/Schema1" },
+      },
+      additionalProperties: false,
+    });
+    expect(output.dependencies).not.toStrictEqual([
+      "Schema1", "Schema1",
+    ]);
+    expect(output.dependencies).toStrictEqual([
+      "Schema1",
+    ]);
+  });
 });
